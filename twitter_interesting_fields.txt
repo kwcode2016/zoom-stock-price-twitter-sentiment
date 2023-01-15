@@ -1,0 +1,32 @@
+
+
+
+
+- date
+- content
+-renderedContent 
+- user
+    - username #important
+    - id #important
+    - displayname #important
+    - verified
+    - description #description of user
+    - statusesCount
+    - favoritesCount
+    - mediaCount
+    - url
+- replyCount #important. number of replies to this tweet. if 0 not so important
+- retweetCount #important. if number of retweet 0 than not so important
+- likeCount #important
+- quoteCount #maybe important
+- conversationId
+- lang #language 'en' = english
+-   "retweetedTweet": null,
+    "quotedTweet": null,
+    "inReplyToTweetId": null,
+    "inReplyToUser": null,
+    "mentionedUsers": null,
+    "coordinates": null,
+    "place": null,
+    "hashtags": null,
+    "cashtags": [ "ZM" ] 
