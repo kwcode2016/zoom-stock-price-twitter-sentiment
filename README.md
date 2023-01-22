@@ -8,7 +8,8 @@ zm-6-2019-04-01-2022-12-11-all-zm-tweets.jsonl  - File for all tweets in Date Ra
 zoom-stock-prices-2019-04-01-2022-12-11.csv - File for all ZOOM $ZM stock prices in Date Range
 
 eda-zm.ipynb  - EDA Jupyter Notebook - Initial Exploration of data
-cleaning-data.ipynb - Functions to clean tweets to prepare for sentiment analysis
+
+eda2-zm-cleaning-data.ipynb - Functions to clean tweets to prepare for sentiment analysis
 
 
 
