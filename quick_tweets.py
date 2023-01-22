@@ -3,9 +3,9 @@ tweet_json = 'zm-6-2019-04-01-2022-12-11-all-zm-tweets.jsonl'
 zm_price_filename = 'zoom-stock-prices-2019-04-01-2022-12-11.csv'
 # output_csv = 'zm-tweets-jan to april 2020.csv'
 
-def breakpoint():
+def breakpoint(message = 'breakpoint reached'):
     import sys
-    sys.exit("breakpoint reached")
+    sys.exit(message)
 
 
 import pandas as pd
@@ -14,8 +14,8 @@ import pandas as pd
 print(tweet_json)
 print(zm_price_filename)
 
-from_date = '2020-2-26'
-to_date = '2020-2-29'
+from_date = '2020-9-11'
+to_date = '2020-9-13'
 
 
 
@@ -23,7 +23,7 @@ output_name = f'zm-tweet-{from_date}-to-{to_date}.csv'
 
 print(output_name)
 
-# breakpoint()
+# breakpoint('testing message')
 
 tweet_zm_df = pd.read_json(tweet_json, lines=True)
 
