@@ -14,8 +14,8 @@ import pandas as pd
 print(tweet_json)
 print(zm_price_filename)
 
-from_date = '2020-9-11'
-to_date = '2020-9-13'
+from_date = '2020-9-25'
+to_date = '2020-9-28'
 
 
 
