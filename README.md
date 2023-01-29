@@ -15,6 +15,8 @@ eda2-zm-cleaning-data.ipynb - Functions to clean tweets to prepare for sentiment
 
 ## Section 2: Sentiment Analysis
 
+Researching existing research and seeing what results they had.
+
 Coming soon: Jupyter Notebooks setting up and testing Roberta model for sentiment analysis
 
 

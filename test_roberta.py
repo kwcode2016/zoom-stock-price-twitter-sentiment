@@ -42,7 +42,8 @@ model = AutoModelForSequenceClassification.from_pretrained(MODEL)
 
 # text = "Good night 😊"
 # text = "This is not so good"
-text = "The context of the date is not satisfactory"
+# text = "The context of the date is not satisfactory"
+text = "$zm ended the day at the price of $90.95"
 text = preprocess(text)
 encoded_input = tokenizer(text, return_tensors='pt')
 output = model(**encoded_input)
@@ -60,7 +61,7 @@ scores = softmax(scores)
 # scores = softmax(scores)
 
 
-print("testing...")
+print(f"Results on text: {text}")
 
 
 ranking = np.argsort(scores)
