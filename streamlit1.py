@@ -33,10 +33,18 @@ st.write(txt)
 
 
 import datetime
-date = st.sidebar.date_input('start date', datetime.date(2022,1,1))
+start_date = st.sidebar.date_input('start date', datetime.date(2022,1,1))
+end_date = st.sidebar.date_input('end date', datetime.date(2022,1,1))
+
+start_date_message = "Start Date: " + str(start_date)
+st.write(start_date_message)
+st.write(start_date)
 
 
-st.write(date)
+
+end_date_message = "End Date: " + str(end_date)
+st.write (end_date_message)
+st.write(end_date)
 
 
 
