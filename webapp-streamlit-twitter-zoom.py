@@ -30,7 +30,14 @@ st.title("Zoom Stock Prices with Twitter Sentiment Analysis")
 
 
 st.write("Stock Price Chart")
-zm_stock_df = pd.read_csv('zoom-stock-prices-2019-04-01-2022-12-11.csv')
+
+@st.cache_data
+def get_data():
+    source = pd.read_csv('zoom-stock-prices-2019-04-01-2022-12-11.csv')
+    return source
+
+
+zm_stock_df = get_data()
 
 # zm_stock_df[400:450]
 
@@ -129,7 +136,7 @@ from vega_datasets import data
 
 iris = data.iris()
 
-
+#test
 
 
 chart1 = alt.Chart(iris).mark_point().encode(
@@ -202,8 +209,9 @@ daily_sum = zm_tweet_sentiment_df.groupby([zm_tweet_sentiment_df['date'].dt.date
 
 daily_sum = daily_sum.unstack(fill_value=0)
 daily_sum.reset_index(level=0, inplace=True) # date column was not flat and cannot be accessed - this flattens all columns
-# st.write(daily_sum.columns)
-daily_sum
+st.write(daily_sum.columns)
+st.write("uncomment to see daily_sum df")
+# daily_sum
 
 
 
@@ -217,34 +225,135 @@ import pandas as pd
 
 # Create an Altair Chart from the DataFrame
 zm_positive_chart = alt.Chart(daily_sum).mark_line(color='green').encode(
-    x='date',
-    # y='negative:Q',
-    # y2='neutral:Q',
-    y='positive',
+    x='yearmonth(date):O',
+    y='sum(positive)',
 ).properties(
-    width=1200,
+    width=800,
     height=400
 ).interactive()
 
 
 zm_negative_chart = alt.Chart(daily_sum).mark_line(color='red').encode(
-    x='date',
-    y='negative',
-    # y2='neutral:Q',
-    # y='positive',
+    # x='date',
+    x='yearmonth(date):O',
+    # y='negative',
+    y='sum(negative)',
 ).properties(
-    width=1200,
+    width=800,
     height=400
 ).interactive()
 
 zm_neutral_chart = alt.Chart(daily_sum).mark_line(color='grey').encode(
-    x='date',
-    # y='negative',
-    y='neutral',
+    # x='date',
+    x='yearmonth(date):O',
+    # y='neutral',
+    y='sum(neutral)',
 ).properties(
-    width=1200,
+    width=800,
     height=400
 ).interactive()
 
 
 zm_positive_chart + zm_negative_chart + zm_neutral_chart
+# zm_positive_chart 
+
+
+
+# testing bar chart - working , but negative is below positive and is hard read
+# zm_positive_chart_test1 = alt.Chart(daily_sum).mark_bar().encode(
+#     x='yearmonth(date):O',
+#     y=alt.Y('sum(positive)'),
+#     y2=alt.Y2('sum(negative)')
+
+# ).properties(
+#     width=800,
+#     height=400
+# ).interactive()
+
+
+# zm_positive_chart_test1
+
+
+
+# zm_stacked_bar = alt.Chart(zm_tweet_sentiment_df).mark_bar().encode(
+#     x='yearmonth(date):O',
+#     y='sum(sentiment_r_latest)',
+#     color = 'sentiment_r_latest'
+# ).properties(
+#     width=800,
+#     height=400
+# ).interactive()
+
+# zm_stacked_bar
+
+
+
+
+# testing bar chart side by side - not working at all
+# test_barchart_sidebyside = alt.Chart(daily_sum).mark_bar().encode(
+#     column = alt.Column('date', spacing =5 ),
+#     x=alt.X('yearmonth(date)', sort=["sum(positive)","sum(negative)"], axis=None),
+#     y=alt.Y('value'),
+#     # y2=alt.y2('sum(negative)')
+#     color = alt.Color('variable')
+# ).properties(
+#     width=800,
+#     height=400
+# ).interactive()
+
+# test_barchart_sidebyside
+
+
+# testing grouped bar chart and altair ver 5?
+# WORKS!!! so we can use this for capstone.
+import altair as alt
+from vega_datasets import data
+
+source = data.barley()
+
+st.write(source.head(10))
+
+source.columns
+
+
+grouped_bar_chart = alt.Chart(source).mark_bar().encode(
+    x='year:O',
+    y='sum(yield):Q',
+    color='year:N',
+    column='site:N'
+) 
+
+grouped_bar_chart
+
+
+
+# testing seperatae col grouped bar chart
+import altair as alt
+import pandas as pd
+
+
+data = {'Month':['Jan', 'Jan', 'Feb', 'Feb', 'Mar', 'Mar', 'Apr', 'Apr'], 
+        'Day': [1, 15, 1, 15, 1, 15, 1, 15],
+        'rain':[20, 21, 19, 18, 1, 12, 33, 12], 
+        'snow':[0, 2, 6, 3, 4, 2, 5 ,11]}
+ 
+df = pd.DataFrame(data)
+
+df
+
+
+seperate_col_grouped_bar_chart = alt.Chart(df).mark_bar().encode(
+    x='amount (cm):Q',
+    y='type:N',
+    color='type:N',
+    row=alt.Row('Month', sort=['Jan', 'Feb', 'Mar', 'Apr'])
+)
+
+
+# .transform_fold(
+#     as_=['type', 'amount (cm)'],
+#     fold=['rain', 'snow']
+# )
+
+st.write('seperate_col_grouped_bar_chart below: but does not seem to display anything! ')
+seperate_col_grouped_bar_chart
