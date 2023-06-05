@@ -9,22 +9,23 @@ print(torch.cuda.is_available())
 
 
 
-# Load your dataset
+# Load fine tuning data 1.3k manually labelled zoom tweets
 df = pd.read_csv('zoom-sentiment-finetuning-sheet.csv')
 
+
+# checking data and any missing values 
+# missing values will stop the sentiment analysis
 nan_rows = df[df['sentiment_combined_final_label'].isna()]
 print("Number of rows with NaN values in 'label':", len(nan_rows))
 print("Indices of rows with NaN values in 'label':", nan_rows.index)
 print(df.shape)
 
-#dropping all nan
+#dropping all nan rows
 df = df.dropna(subset=['sentiment_combined_final_label'])
 print(f"df.shape after dropna: {df.shape} ")
-breakpoint()
 
 
-
-
+# getting the tweets and labels ready as lists for the fine tuning
 tweets = df['clean_tweet'].tolist()
 labels = df['sentiment_combined_final_label'].tolist()  # I assume your labels are integers
 
@@ -33,15 +34,12 @@ labels = df['sentiment_combined_final_label'].tolist()  # I assume your labels a
 num_labels = 3
 
 # Load pre-trained model and tokenizer
-# model_name = "cardiffnlp/twitter-roberta-base-sentiment"
 model_name = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 tokenizer = RobertaTokenizer.from_pretrained(model_name)
-# model = RobertaForSequenceClassification.from_pretrained(model_name)
 model = RobertaForSequenceClassification.from_pretrained(model_name, num_labels=num_labels)
 
-# breakpoint()
 
-# Tokenize your tweets
+# Tokenize tweets
 encodings = tokenizer(tweets, truncation=True, padding=True, max_length=512)
 
 
@@ -124,15 +122,6 @@ training_args = TrainingArguments(
     logging_dir='./logs',            
 )
 
-# Set up the trainer
-# training_args = TrainingArguments(
-#     output_dir='./results',
-#     num_train_epochs=2,
-#     per_device_train_batch_size=16,
-#     logging_steps=10,
-#     logging_dir='./logs',
-# )
-
 trainer = Trainer(
     model=model,                         
     args=training_args,                  
@@ -140,10 +129,6 @@ trainer = Trainer(
     eval_dataset=val_dataset,            
     compute_metrics=compute_metrics,     
 )
-
-
-
-
 
 
 
